@@ -25,7 +25,7 @@ using System.Linq;
 
 namespace MyApi.Controllers.v1
 {
-    [ApiVersion("1")]
+    [ApiVersion("2")]
     //[AllowAnonymous]
     public class UsersController : BaseController
     {
@@ -35,7 +35,7 @@ namespace MyApi.Controllers.v1
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
         private readonly SignInManager<User> signInManager;
-        
+
         private readonly IRepository<Role> _Role;
 
         public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IJwtService jwtService, UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager, IRepository<Role> role)
@@ -55,14 +55,14 @@ namespace MyApi.Controllers.v1
         {
             try
             {
-                var user =await userManager.FindByNameAsync(User.Identity.Name);
-                if (user!=null)
+                var user = await userManager.FindByNameAsync(User.Identity.Name);
+                if (user != null)
                 {
                     return Ok(true);
                 }
                 return Ok(false);
             }
-            catch 
+            catch
             {
                 return Ok(false);
             }
@@ -101,11 +101,20 @@ namespace MyApi.Controllers.v1
             logger.LogError("متد Create فراخوانی شد");
             HttpContext.RiseError(new Exception("متد Create فراخوانی شد"));
 
-            var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName == userDto.UserName);
+            var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName.ToLower() == userDto.UserName.ToLower() || p.Address.ToLower() ==userDto.Email.ToLower()); ;
             if (exists)
                 return BadRequest("نام کاربری تکراری است");
             //Services.Bessines.UsersProcess usersProcess = new Services.Bessines.UsersProcess(signInManager, userManager, roleManager, _clientRepository, _accountingHeading, _Factor, _Expert);
-
+            //await roleManager.CreateAsync(new Role()
+            //{
+            //    Name = "Admin",
+            //    Description = "مدیر",
+            //});
+            //await roleManager.CreateAsync(new Role()
+            //{
+            //    Name = "User",
+            //    Description = "مشتریان",
+            //});
             User user = new User()
             {
                 UserName = userDto.UserName,
@@ -113,6 +122,8 @@ namespace MyApi.Controllers.v1
                 Email = userDto.Email,
                 FullName = userDto.FullName
             };
+            await userManager.CreateAsync(user, user.PasswordHash);
+            await userManager.AddToRolesAsync(user, new List<string> { "User" });
             //var result = await usersProcess.AddUserToApp(user, null);
             //if (result != true)
             //    throw new BadRequestException("مشکلی در فرایند ثبت کاربر ایجاد شده است");
@@ -144,33 +155,33 @@ namespace MyApi.Controllers.v1
             if (user == null)
                 return NotFound();
 
-            
+
             //await userRepository.UpdateSecuirtyStampAsync(user, cancellationToken);
 
             return user;
         }
         [Authorize]
         [HttpGet("[action]")]
-        public virtual async Task<ApiResult<UserModel>> GetCorentUserBio( CancellationToken cancellationToken)
+        public virtual async Task<ApiResult<UserModel>> GetCorentUserBio(CancellationToken cancellationToken)
         {
             //var user2 = await userManager.FindByIdAsync(id.ToString());
             //var role = await roleManager.FindByNameAsync("Admin");
 
             var user = await userManager.FindByNameAsync(User.Identity.Name);
-            
+
             if (user == null)
-                return NotFound();            
-            var dto= new UserModel()
+                return NotFound();
+            var dto = new UserModel()
             {
-                id=user.Id,
-                IsActive=user.IsActive,
-                Email=user.Email,
-                FullName=user.FullName,
-                UserName=user.UserName,
-                RollName=await userManager.GetRolesAsync(user),
-                
+                id = user.Id,
+                IsActive = user.IsActive,
+                Email = user.Email,
+                FullName = user.FullName,
+                UserName = user.UserName,
+                RollName = await userManager.GetRolesAsync(user),
+
             };
-            
+
             return dto;
         }
         /// <summary>
@@ -201,7 +212,7 @@ namespace MyApi.Controllers.v1
 
             var jwt = await jwtService.GenerateAsync(user);
             return new JsonResult(jwt);
-        }        
+        }
         [Authorize(Roles = "Admin")]
         [HttpPut("[action]/{id}")]
         public virtual async Task<ApiResult> Update(int id, UserDto UserDto, CancellationToken cancellationToken)
@@ -222,12 +233,15 @@ namespace MyApi.Controllers.v1
         public virtual async Task<ApiResult> Delete(int id, CancellationToken cancellationToken)
         {
             var user = await userManager.FindByIdAsync(id.ToString());
-            
-            return BadRequest("در فرایند پاک کردن کاربر مشکل پیش امده ");
+            await userManager.RemoveFromRolesAsync(user, await userManager.GetRolesAsync(user));
+            var res = await userManager.DeleteAsync(user);
+            if(!res.Succeeded)
+                return BadRequest("در فرایند پاک کردن کاربر مشکل پیش امده ");
+            return Ok();
         }
         [HttpGet("[action]/{id}/{newpassword}")]
         [Authorize(Roles = "Admin")]
-        public virtual async Task<ApiResult> setPassword(int id ,string newpassword)
+        public virtual async Task<ApiResult> setPassword(int id, string newpassword)
         {
             var user = await userManager.FindByIdAsync(id.ToString());
             var token = await userManager.RemovePasswordAsync(user);
@@ -240,8 +254,8 @@ namespace MyApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public virtual async Task<ActionResult<List<string>>> GetUserRolls(int userid)
         {
-            var useer =await userManager.FindByIdAsync(userid.ToString());
-            var rolss =await userManager.GetRolesAsync(useer);
+            var useer = await userManager.FindByIdAsync(userid.ToString());
+            var rolss = await userManager.GetRolesAsync(useer);
             return Ok(rolss.ToList());
         }
 
@@ -249,12 +263,12 @@ namespace MyApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public virtual async Task<ActionResult<List<Role>>> GeAllRolls(CancellationToken cancellationToken)
         {
-            var useer =await _Role.Entities.AsNoTracking().ToListAsync(cancellationToken);
-            
+            var useer = await _Role.Entities.AsNoTracking().ToListAsync(cancellationToken);
+
             return Ok(useer);
         }
         [HttpGet("[action]/{RollName}")]
-        [Authorize(Roles = "Admin,Accountants")]
+        [Authorize(Roles = "Admin")]
         public virtual async Task<ActionResult<List<UserModel>>> GetUsersInRoll(string RollName, CancellationToken cancellationToken)
         {
             //var userName = HttpContext.User.Identity.GetUserName();

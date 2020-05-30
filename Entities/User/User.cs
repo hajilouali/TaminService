@@ -1,4 +1,5 @@
-﻿using Entities.Tikets;
+﻿using Entities.Tamin;
+using Entities.Tikets;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -23,9 +24,11 @@ namespace Entities
 
         public bool IsActive { get; set; }
         public DateTimeOffset? LastLoginDate { get; set; }
-        
+        public ICollection<UserPayement> UserPayements { get; set; }
         public ICollection<Tiket> Tikets { get; set; }
-
+        public ICollection<Employees> Employees { get; set; }
+        public ICollection<Manufacturys> Manufacturys { get; set; }
+        public ICollection<PayementHistory> payementHistories { get; set; }
     }
 
     public class UserConfiguration : IEntityTypeConfiguration<User>

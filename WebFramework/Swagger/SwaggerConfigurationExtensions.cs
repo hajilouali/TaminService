@@ -39,7 +39,7 @@ namespace WebFramework.Swagger
                 //options.IgnoreObsoleteProperties();
 
                 options.SwaggerDoc("v1", new Info { Version = "v1", Title = "API V1" });
-                options.SwaggerDoc("v2", new Info { Version = "v2", Title = "API V2" });
+                options.SwaggerDoc("v2", new Info { Version = "v2", Title = "API v2" });
 
                 #region Filters
                 //Enable to use [SwaggerRequestExample] & [SwaggerResponseExample]
@@ -139,7 +139,7 @@ namespace WebFramework.Swagger
                 #endregion
 
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
-                options.SwaggerEndpoint("/swagger/v2/swagger.json", "V2 Docs");
+                options.SwaggerEndpoint("/swagger/v2/swagger.json", "v2 Docs");
             });
         }
     }
