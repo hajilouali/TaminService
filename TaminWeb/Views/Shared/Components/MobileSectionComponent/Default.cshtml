@@ -1,0 +1,36 @@
+﻿@model Common.PagesConfig
+<section class="featured-six">
+    <div class="container">
+        <div class="section-title style-three text-center">
+            <h2 class="title wow pixFadeUp" data-wow-delay="0.2s">
+                از دستگاه اندرویدی یا آی او اس خودبرای
+                <br>تهیه لیست بیمه خود استفاده کنید.
+            </h2>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-5 col-md-5">
+                <div class="feature-image-wrapper wow pixFadeLeft">
+                    <img src="~/Content/media/feature/tablet.png" alt="">
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7">
+                @foreach (var item in Model.MobileSection.MobileSectionProperties)
+                {
+                    <div class="saaspik-icon-box-wrapper style-six wow pixFadeRight" data-wow-delay="0.5s">
+                        <div class="saaspik-icon-box-icon">
+                            <img src="@item.Image" alt="icon">
+                        </div>
+                        <div class="pixsass-icon-box-content">
+                            <h3 class="pixsass-icon-box-title">
+                                <a >@Html.Raw(item.Discription)</a>
+                            </h3>
+                        </div>
+                    </div>
+                }   
+            </div>
+        </div>
+    </div>
+    <div class="down-bg">
+        <img src="~/Content/media/background/down-bg.png" alt="down-bg">
+    </div>
+</section>

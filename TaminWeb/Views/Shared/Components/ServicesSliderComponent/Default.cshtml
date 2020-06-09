@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Entities.SitePropertys.SServiceSlider>
+<section class="revolutionize">
+
+    <div class="container">
+        <div class="section-title style-three text-center">
+            <h3 class="sub-title wow pixFadeUp">تصاویر سامانه</h3>
+            <h2 class="title wow pixFadeUp" data-wow-delay="0.3s">
+                محیط کاری سامانه مدیریت
+                <br> بیمه تامین اجتماعی
+            </h2>
+        </div>
+        <div id="pix-tabs" class="wow pixFadeUp" data-wow-delay="0.5s">
+            <ul id="pix-tabs-nav">
+                @foreach (var item in Model)
+                {
+                    <li>
+                        <a href="#tab_@item.Id">@item.Title</a>
+                    </li>
+                }
+                
+            </ul>
+            <div id="pix-tabs-content">
+                @foreach (var item1 in Model)
+                {
+                <div id="tab_@item1.Id" class="content">
+                    <img src="@item1.Image" alt="revolutionize">
+                    <div class="shape-shadow"></div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</section>

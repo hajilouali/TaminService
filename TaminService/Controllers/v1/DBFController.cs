@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Bessines;
+using Services.Services.EmailService;
 using WebFramework.Api;
 
 namespace TaminService.Controllers.v1
@@ -15,9 +16,18 @@ namespace TaminService.Controllers.v1
     [AllowAnonymous]
     public class DBFController : BaseController
     {
+        private readonly IEmailSender _emailSender;
+
+        public DBFController(IEmailSender emailSender)
+        {
+            _emailSender = emailSender;
+        }
+
         [HttpGet("[action]")]
         public virtual async Task<ActionResult<bool>> CheckTokenIsValid(CancellationToken cancellationToken)
         {
+            //var message = new MessagebyURL(new string[] { "hajilouali@gmail.com" }, "تاییدیه ایمیل","url","علی حاجی لو", null);
+            //await _emailSender.SendEmailRegisterAsync(message);
             try
             {
                 var moel = new BusinessLogicLayer.tblSalInsurenceDiskFactory()

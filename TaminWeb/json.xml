@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PagesConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <siteSlider>
+    <subscriptionForm>true</subscriptionForm>
+    <Image>aa</Image>
+    <Title>علی</Title>
+    <Subtitle>زیر عنوان</Subtitle>
+  </siteSlider>
+</PagesConfig>

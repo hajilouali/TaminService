@@ -1,0 +1,89 @@
+﻿@model UserFormGuestionViewModels
+@{
+    ViewData["Title"] = "تماس با ما";
+    Common.SiteSettings datainfo = ViewData["Info"] as Common.SiteSettings;
+}
+
+<section class="contactus">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="contact-infos">
+                    <div class="contact-info">
+                        <h3 class="title">موقعیت ما</h3>
+                        <p class="description">
+                            @datainfo.SiteInfo.Address
+                        </p>
+                        <div class="info phone">
+                            <i class="ei ei-icon_phone"></i>
+                            <span>@datainfo.SiteInfo.Phone</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="faq-forms">
+                    
+                    <div class="section-title text-center">
+                        <h3 class="sub-title">فرم سوال</h3>
+                        <h2 class="title">آیا سوالی دارید از ما؟</h2>
+                    </div>
+                    <form id="newsLetterForm" method="post" asp-controller="Question" asp-action="Create" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed" class="faq-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                                <input asp-for="FullName" type="text" placeholder="نام">
+
+                            </div>
+                            <div class="col-md-6">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                <input asp-for="PhoneNumber" type="text" placeholder="شماره تماس">
+
+                            </div>
+                        </div>
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                        <input asp-for="Subject" type="text" placeholder="موضوع">
+                        <span asp-validation-for="Question" class="text-danger"></span>
+                        <textarea asp-for="Question" cols="30" rows="10" placeholder="پیام شما"></textarea>
+                        <br />
+                        <button type="submit" class="pix-btn submit-btn">ارسال سوالات</button>
+                        <div id="success-message-container" class="alert alert-success text-center d-none">
+                            پیغام شما با <strong>موفقیت</strong> ارسال شد.
+                        </div>
+
+                        <div id="failure-message-container" class="alert alert-danger text-center d-none">
+                            <strong>متاسفانه</strong> پیغام شما در ارسال با خطا مواجهه شد . لطفاً مجددا تلاش نمایید!
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@section Scripts{
+
+    <script src="~/js/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        completed = function (xhr) {
+            if (xhr.responseText == "true") {
+                document.getElementById("newsLetterForm").reset();
+
+                $("#newsLetterForm input,textarea").removeClass('valid');
+                $("#success-message-container").removeClass("d-none");
+                setTimeout(function () {
+                    $("#success-message-container").addClass("d-none");
+                }, 5000);
+            } else if (xhr.responseText == "false") {
+                $("#failure-message-container").removeClass("d-none");
+                setTimeout(function () {
+                    $("#failure-message-container").addClass("d-none");
+                }, 5000);
+            }
+        };
+    </script>
+
+}

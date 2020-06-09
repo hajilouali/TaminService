@@ -339,7 +339,7 @@ namespace Services.Bessines
                 #endregion
 
 
-                string address = "ه‘“ ù¤¢ ù¢‘› - ِ‘—¨¢¤گ";
+                //string address = "ه‘“ ù¤¢ ù¢‘› - ِ‘—¨¢¤گ";
                 //if (clsSalVariable.SalfactID == "6923510198")
                 //    address = "ü÷‏ُ، ô‘ُگ ِ‘“‘‏، - ِ‘ْê¬گ";
                 //else if (clsSalVariable.SalfactID == "6953620020")

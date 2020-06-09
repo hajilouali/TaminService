@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Entities.SitePropertys.SMenuItems>
+<header class="site-header @(Convert.ToInt32(this.ViewData["navtype"])==0 ?"header-two toggle-light":"header-dark")  header_trans-fixed" data-top="992">
+    <div class="container">
+        <div class="header-inner">
+            <div class="site-mobile-logo">
+                <a href="/" class="logo">
+                    <img src="@ViewData["Logo"]" alt="site logo" class="main-logo">
+                    <img src="@ViewData["Logo2"]" alt="site logo" class="sticky-logo">
+                </a>
+            </div>
+
+            <div class="toggle-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <nav class="site-nav @(Convert.ToInt32(this.ViewData["navtype"])==0 ?"hnav-two":"nav-dark") ">
+                <div class="close-menu">
+                    <span>بستن</span>
+                    <i class="ei ei-icon_close"></i>
+                </div>
+                <div class="site-logo">
+                    <a href="/" class="logo">
+                        <img src="@ViewData["Logo"]" alt="site logo" class="main-logo">
+                        <img src="@ViewData["Logo2"]" alt="site logo" class="sticky-logo">
+                    </a>
+                </div>
+                <div class="menu-wrapper" data-top="992">
+                    <ul class="site-main-menu">
+                        @foreach (var item in Model)
+                        {
+                            @if (item.ParentID == 0)
+                            {
+                                @if (Model.Where(p => p.ParentID == item.Id).Any())
+                                {
+                                    <li class="menu-item-has-children">
+                                        <a>@item.Title</a>
+                                        <ul class="sub-menu">
+                                            @foreach (var sub in Model.Where(p => p.ParentID == item.Id))
+                                            {
+                                                <li>
+                                                    <a href="@sub.URL">@sub.Title</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="@item.URL">@item.Title</a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                    <div class="nav-right">
+                        <a href="@ViewData["PortalUrl"]" class="nav-btn style-two">ورود به سامانه</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>

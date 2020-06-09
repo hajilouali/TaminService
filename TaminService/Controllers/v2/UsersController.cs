@@ -25,7 +25,7 @@ using System.Linq;
 
 namespace MyApi.Controllers.v1
 {
-    [ApiVersion("2")]
+    [ApiVersion("1")]
     //[AllowAnonymous]
     public class UsersController : BaseController
     {
@@ -101,7 +101,7 @@ namespace MyApi.Controllers.v1
             logger.LogError("متد Create فراخوانی شد");
             HttpContext.RiseError(new Exception("متد Create فراخوانی شد"));
 
-            var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName.ToLower() == userDto.UserName.ToLower() || p.Address.ToLower() ==userDto.Email.ToLower()); ;
+            var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName.ToLower() == userDto.PhoneNumber.ToLower() || p.Address.ToLower() ==userDto.Email.ToLower()); ;
             if (exists)
                 return BadRequest("نام کاربری تکراری است");
             //Services.Bessines.UsersProcess usersProcess = new Services.Bessines.UsersProcess(signInManager, userManager, roleManager, _clientRepository, _accountingHeading, _Factor, _Expert);
@@ -117,10 +117,11 @@ namespace MyApi.Controllers.v1
             //});
             User user = new User()
             {
-                UserName = userDto.UserName,
+                UserName = userDto.PhoneNumber,
                 PasswordHash = userDto.Password,
                 Email = userDto.Email,
-                FullName = userDto.FullName
+                FullName = userDto.FullName,
+                PhoneNumber=userDto.PhoneNumber
             };
             await userManager.CreateAsync(user, user.PasswordHash);
             await userManager.AddToRolesAsync(user, new List<string> { "User" });
@@ -194,11 +195,12 @@ namespace MyApi.Controllers.v1
         [AllowAnonymous]
         public virtual async Task<ActionResult> Token([FromForm]TokenRequest tokenRequest, CancellationToken cancellationToken)
         {
+            
             if (!tokenRequest.grant_type.Equals("password", StringComparison.OrdinalIgnoreCase))
                 throw new Exception("OAuth flow is not password.");
 
             //var user = await userRepository.GetByUserAndPass(username, password, cancellationToken);
-            var user = await userManager.FindByNameAsync(tokenRequest.username);
+            var user = await userManager.Users.FirstOrDefaultAsync(p=>p.PhoneNumber==tokenRequest.username);
             if (user == null)
                 throw new BadRequestException("نام کاربری یا رمز عبور اشتباه است");
 
@@ -219,11 +221,11 @@ namespace MyApi.Controllers.v1
         {
             var updateUser = await userRepository.GetByIdAsync(cancellationToken, id);
 
-            updateUser.UserName = UserDto.UserName;
+            updateUser.UserName = UserDto.PhoneNumber;
             updateUser.FullName = UserDto.FullName;
             updateUser.Email = UserDto.Email;
             updateUser.IsActive = UserDto.IsActive;
-
+            updateUser.PhoneNumber = UserDto.PhoneNumber;
 
             await userManager.UpdateAsync(updateUser);
             return Ok();

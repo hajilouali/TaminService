@@ -5,7 +5,7 @@ using WebFramework.Api;
 
 namespace TaminApp.Models
 {
-    public class PostDto : BaseDto<PostDto, Post, Guid>
+    public class PostDto : BaseDto<PostDto, Post>
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -13,7 +13,7 @@ namespace TaminApp.Models
         public int AuthorId { get; set; }
     }
 
-    public class PostSelectDto : BaseDto<PostSelectDto, Post, Guid>
+    public class PostSelectDto : BaseDto<PostSelectDto, Post>
     {
         public string Title { get; set; }
         public string Description { get; set; }

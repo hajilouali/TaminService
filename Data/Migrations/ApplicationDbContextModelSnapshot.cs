@@ -40,20 +40,26 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Entities.Post", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AuthorId");
 
                     b.Property<int>("CategoryId");
 
+                    b.Property<string>("Content");
+
                     b.Property<string>("Description")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(127);
+
+                    b.Property<string>("Keys")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(200);
+                        .HasMaxLength(70);
 
                     b.HasKey("Id");
 
@@ -92,6 +98,166 @@ namespace Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("Entities.SitePropertys.Pages.Pages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTime");
+
+                    b.Property<string>("Keys");
+
+                    b.Property<string>("PageContent");
+
+                    b.Property<string>("PageTitle")
+                        .IsRequired()
+                        .HasMaxLength(70);
+
+                    b.Property<string>("ShortDiscription")
+                        .IsRequired()
+                        .HasMaxLength(150);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pages");
+                });
+
+            modelBuilder.Entity("Entities.SitePropertys.Post.Comments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(500);
+
+                    b.Property<DateTime>("DateTime");
+
+                    b.Property<int>("IsShow");
+
+                    b.Property<int>("ParentID");
+
+                    b.Property<int>("PostID");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasMaxLength(150);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostID");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Entities.SitePropertys.SMenuItems", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ParentID");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200);
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasMaxLength(1500);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SMenuItems");
+                });
+
+            modelBuilder.Entity("Entities.SitePropertys.SQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Question")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Respons")
+                        .HasMaxLength(1000);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SQuestions");
+                });
+
+            modelBuilder.Entity("Entities.SitePropertys.SServiceSlider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SServiceSliders");
+                });
+
+            modelBuilder.Entity("Entities.SitePropertys.SUserQuestions", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTime");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("IsReade");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(11);
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasMaxLength(1500);
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(200);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SUserQuestions");
+                });
+
+            modelBuilder.Entity("Entities.SSlider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Discription")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(1500);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SSliders");
                 });
 
             modelBuilder.Entity("Entities.Tamin.Employees", b =>
@@ -411,16 +577,17 @@ namespace Data.Migrations
                     b.Property<string>("Address")
                         .HasMaxLength(700);
 
+                    b.Property<string>("CodePhone");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256);
+                        .HasMaxLength(200);
 
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasMaxLength(200);
 
                     b.Property<bool>("IsActive");
@@ -439,7 +606,8 @@ namespace Data.Migrations
 
                     b.Property<string>("PasswordHash");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
@@ -450,7 +618,6 @@ namespace Data.Migrations
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -559,13 +726,21 @@ namespace Data.Migrations
             modelBuilder.Entity("Entities.Post", b =>
                 {
                     b.HasOne("Entities.User", "Author")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Entities.SitePropertys.Post.Comments", b =>
+                {
+                    b.HasOne("Entities.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostID")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

@@ -6,12 +6,14 @@ using Common;
 using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Services.Services.EmailService;
 using WebFramework.Configuration;
 using WebFramework.CustomMapping;
 using WebFramework.Middlewares;
@@ -36,6 +38,16 @@ namespace TaminService
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            var emailConfig = Configuration.GetSection(nameof(SiteSettings))
+                .Get<SiteSettings>();
+            services.AddSingleton(emailConfig.EmailConfiguration);
+            //services.AddScoped<IEmailSender, EmailSender>();
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
+
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
 
 

@@ -1,0 +1,37 @@
+﻿@model Common.PagesConfig
+<section class="download">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 pix-order-one">
+                <div class="download-wrapper">
+                    <h2 class="title wow pixFadeUp">دریافت نسخه موبال</h2>
+                    <p class="wow pixFadeUp" data-wow-delay="0.3s">هم اکنون برنامه های تحت موبایل  در نسخه های Android و IOS  مدیریت بیمه تامین اجتماعی در دسترس شما میباشد</p>
+                    <div class="app-btn-wrapper">
+                        @if (!string.IsNullOrEmpty(Model.AndroidURL))
+                        {
+                            <a href="@Model.AndroidURL" class="app-btn btn-active wow flipInX" data-wow-delay="0.5s"><i class="fi flaticon-google-play"></i> <span>گوگل پلی</span> </a>
+
+                        }
+                        @if (!string.IsNullOrEmpty(Model.BazarUrl))
+                        {
+                            <a href="@Model.BazarUrl" class="app-btn wow flipInX" data-wow-delay="0.5s"><i class="fi flaticon-apple-logo"></i> <span>اپ استور</span></a>
+
+                        }
+                        @if (!string.IsNullOrEmpty(Model.IOSUrl))
+                        {
+                            <a href="@Model.IOSUrl" class="app-btn wow flipInX" data-wow-delay="0.5s"><i class="fi flaticon-apple-logo"></i> <span>اپ استور</span></a>
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="download-feature-image">
+                    <img src="~/Content/media/download/1.png" alt="" class="image-one wow pixFadeRight">
+                    <img src="~/Content/media/download/2.png" alt="" class="image-two wow pixFadeLeft">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="circle-svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500px" height="500px"><path fill-rule="evenodd" opacity="0.102" fill="rgb(251, 138, 82)" d="M250.000,-0.000 C388.071,-0.000 500.000,111.929 500.000,250.000 C500.000,388.071 388.071,500.000 250.000,500.000 C111.929,500.000 -0.000,388.071 -0.000,250.000 C-0.000,111.929 111.929,-0.000 250.000,-0.000 Z" /></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

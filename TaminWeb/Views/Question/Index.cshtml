@@ -1,0 +1,76 @@
+﻿@model UserFormGuestionViewModels
+@{
+    ViewData["Title"] = "سوالات عمومی";
+}
+
+@await Component.InvokeAsync("QuestionSectionComponent", new { type = TaminWeb.ViewComponets.QuestionType.InPage, Cunt = 10 })
+
+<div class="container">
+    <div class="faq-forms">
+        <div id="success-message-container" class="alert alert-success text-center d-none">
+            پیغام شما با <strong>موفقیت</strong> ارسال شد.
+        </div>
+
+        <div id="failure-message-container" class="alert alert-danger text-center d-none">
+            <strong>متاسفانه</strong> پیغام شما در ارسال با خطا مواجهه شد . لطفاً مجددا تلاش نمایید!
+        </div>
+        <div class="section-title text-center">
+            <h3 class="sub-title">فرم سوال</h3>
+            <h2 class="title">آیا سوالی دارید از ما؟</h2>
+        </div>
+        <form id="newsLetterForm" method="post" asp-controller="Question" asp-action="Create" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed" class="faq-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                    <input asp-for="FullName" type="text" placeholder="نام">
+
+                </div>
+                <div class="col-md-6">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <input asp-for="PhoneNumber" type="text" placeholder="شماره تماس">
+
+                </div>
+            </div>
+            <span asp-validation-for="Subject" class="text-danger"></span>
+            <input asp-for="Subject" type="text" placeholder="موضوع">
+            <span asp-validation-for="Question" class="text-danger"></span>
+            <textarea asp-for="Question" cols="30" rows="10" placeholder="پیام شما"></textarea>
+            <div id="rsss">
+
+            </div>
+            <button type="submit" class="pix-btn submit-btn">ارسال سوالات</button>
+        </form>
+    </div>
+</div>
+<br />
+@await Component.InvokeAsync("signupSectionComponent")
+
+
+
+
+
+@section Scripts{
+
+    <script src="~/js/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        completed = function (xhr) {
+            if (xhr.responseText == "true") {
+                document.getElementById("newsLetterForm").reset();
+
+                $("#newsLetterForm input,textarea").removeClass('valid');
+                $("#success-message-container").removeClass("d-none");
+                setTimeout(function () {
+                    $("#success-message-container").addClass("d-none");
+                }, 5000);
+            } else if (xhr.responseText == "false") {
+                $("#failure-message-container").removeClass("d-none");
+                setTimeout(function () {
+                    $("#failure-message-container").addClass("d-none");
+                }, 5000);
+            }
+        };
+    </script>
+
+}
+
+

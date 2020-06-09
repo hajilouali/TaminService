@@ -1,0 +1,50 @@
+﻿@model Common.PagesConfig
+<section class="banner banner-four">
+    <div class="container">
+        <div class="banner-content-wrap-four">
+            <div class="row">
+                <div class="col-lg-8 col-md-7">
+                    <div class="banner-content">
+                        <h1 class="banner-title wow pixFadeUp" data-wow-delay="0.3s">
+                            @Html.Raw(Model.siteSlider.Title)
+                        </h1>
+                        <p class="description wow pixFadeUp" data-wow-delay="0.5s">
+                            @Html.Raw(Model.siteSlider.Subtitle)
+                        </p>
+
+                        @if (Model.siteSlider.subscriptionForm)
+                        {
+                            <form asp-controller="Auth" asp-action="Register" asp-area="" method="get" class="newsletter-form-banner wow pixFadeUp" data-wow-delay="0.7s" data-pixsaas="">
+                                <div class="newsletter-inner">
+                                    <input type="text" name="Mobile" class="form-control" placeholder="شماره تلفن همراه خود را وارد نمایید" required="">
+                                    <a id="btnfpage" asp-controller="Auth" asp-action="Register" asp-route-Mobile="@Model.siteSlider." name="submit" ><span>شروع کنید</span> <i class="fas fa-spinner fa-spin"></i></a>
+                                </div>
+                                @*<div class="clearfix"></div>
+                                <div class="form-result alert" style="display: none;">
+                                    <div class="content"></div>
+                                </div>*@
+                            </form>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.siteSlider.Video))
+                        {
+                            <a href="@Model.siteSlider.Video" class="play-btn play-btn-two popup-video wow pixFadeUp" data-wow-delay="0.8s">
+                                <i class="ei ei-arrow_triangle-right"></i> تماشای ویدئو
+                            </a>
+                        }
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5">
+                    <div class="promo-mockup wow pixFadeUp text-center">
+                        <img src="@Model.siteSlider.Image" class="wow pixZoomIn" alt="mpckup">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-shape-inner">
+        <div class="bottom-shape">
+            <img src="~/Content/media/banner/banner-three-shape.png" alt="circle">
+        </div>
+    </div>
+</section>

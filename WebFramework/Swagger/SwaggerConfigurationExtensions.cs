@@ -71,7 +71,7 @@ namespace WebFramework.Swagger
                 options.AddSecurityDefinition("Bearer", new OAuth2Scheme
                 {
                     Flow = "password",
-                    TokenUrl = "https://localhost:5001/api/v1/users/Token",
+                    TokenUrl = "http://localhost:5000/api/v1/users/Token",
                 });
                 #endregion
 
