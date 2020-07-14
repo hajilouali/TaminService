@@ -6,8 +6,14 @@ namespace Entities.Tamin
 {
     public class Jobs:BaseEntity    
     {
-        public string Code { get; set; }
-        public string Title { get; set; }
-
+        /// <summary>
+        /// کد شغل
+        /// </summary>
+        public string DSW_JOB { get; set; }
+        /// <summary>
+        /// شرح شغل
+        /// </summary>
+        public string DSW_OCP { get; set; }
+        public ICollection<Employees> Employees { get; set; }
     }
 }

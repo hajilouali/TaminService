@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Entities.Tamin
@@ -66,6 +67,7 @@ namespace Entities.Tamin
         /// نرخ پورسانتاژ
         /// </summary>
         public int DSW_PRATE { get; set; }
+        [ForeignKey("EmployeID")]
         public Employees Employees { get; set; }
         public KarMonth KarMonth { get; set; }
         public class UserConfiguration : IEntityTypeConfiguration<WorkMonth>

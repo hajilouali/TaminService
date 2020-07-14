@@ -107,5 +107,40 @@ namespace Services.Services
             var res = tk.Send(_token, dto);
             return res.IsSuccessful;
         }
+        public async Task<bool> SMSWallet(long Mobile, string user, string code, string Price)
+        {
+            var dto = new SmsIrRestful.UltraFastSend()
+            {
+                Mobile = Mobile,
+                TemplateId = _siteSetting.SMSConfiguration.SharjAccountingTemplateID,
+
+                ParameterArray = new SmsIrRestful.UltraFastParameters[]
+                {
+                    new SmsIrRestful.UltraFastParameters()
+                    {
+                        Parameter="User",
+                        ParameterValue=user
+                    },
+                    new SmsIrRestful.UltraFastParameters()
+                    {
+                        Parameter="Code",
+                        ParameterValue=code
+                    },
+                    new SmsIrRestful.UltraFastParameters()
+                    {
+                        Parameter="Company",
+                        ParameterValue=_siteSetting.SiteInfo.CompanyInfo
+                    },
+                    new SmsIrRestful.UltraFastParameters()
+                    {
+                        Parameter="Price",
+                        ParameterValue=Price
+                    }
+                }
+            };
+            var tk = new SmsIrRestful.UltraFast();
+            var res = tk.Send(_token, dto);
+            return res.IsSuccessful;
+        }
     }
 }

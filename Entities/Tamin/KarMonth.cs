@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Entities.Tamin
@@ -83,8 +84,9 @@ namespace Entities.Tamin
         /// نرخ مشاغل سخت زیان آور
         /// </summary>
         public int DSK_BIMH { get; set; }
+        [ForeignKey("ManufacturyID")]
         public Manufacturys Manufacturys { get; set; }
-        public IEnumerable<WorkMonth> WorkMonths { get; set; }
+        public ICollection<WorkMonth> WorkMonths { get; set; }
         public class UserConfiguration : IEntityTypeConfiguration<KarMonth>
         {
             public void Configure(EntityTypeBuilder<KarMonth> builder)

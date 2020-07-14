@@ -14,9 +14,7 @@ namespace Entities.Tikets
             DataModified = DateTime.Now;
         }
         public string Title { get; set; }
-        public bool Closed { get; set; }
         public short Level { get; set; }
-        public short Department { get; set; }
         public bool IsAdminSide { get; set; }
         public int UserID { get; set; }
         public DateTime DataCreate { get; set; }
@@ -30,7 +28,6 @@ namespace Entities.Tikets
         {
             builder.HasOne(p => p.User).WithMany(p => p.Tikets).HasForeignKey(p => p.UserID);
             builder.Property(p => p.Title).IsRequired().HasMaxLength(100);
-            builder.Property(p => p.Department).IsRequired();
             builder.Property(p => p.Level).IsRequired();
         }
     }

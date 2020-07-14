@@ -1,0 +1,45 @@
+﻿@model Parbad.IPaymentVerifyResult
+@{
+    ViewData["Title"] = "Verify result";
+}
+
+<table class="table">
+    <tr>
+        <td>کد رهگیری </td>
+        <td>@Model.TrackingNumber</td>
+    </tr>
+    <tr>
+        <td>مبلغ</td>
+        <td>@Model.Amount</td>
+    </tr>
+    <tr>
+        <td>درگاه پرداخت</td>
+        <td>@Model.GatewayName</td>
+    </tr>
+    
+    <tr>
+        <td>کد رهگیری بانک</td>
+        <td>@Model.TransactionCode</td>
+    </tr>
+    <tr>
+        <td>نتیجه</td>
+        @if (Model.IsSucceed)
+        {
+            <th>
+                <div class="text-success">
+                    موفق
+                </div>
+            </th>
+        }
+        else
+        {
+            <th>
+                <div class="text-danger">
+                    ناموفق
+                </div>
+            </th>
+        }
+    </tr>
+    
+</table>
+<a class="btn btn-success btn-block" href="#">بازگشت به سایت</a>

@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 
 namespace Common
 {
+    
     public class SiteSettings
     {
         public string ElmahPath { get; set; }
@@ -51,6 +52,8 @@ namespace Common
         public string Logo2 { get; set; }
         public string SiteDiscription { get; set; }
         public string SiteKeys { get; set; }
+        public bool IsFree { get; set; }
+        public int fe { get; set; }
     }
     public class SMSConfiguration
     {

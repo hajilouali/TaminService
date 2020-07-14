@@ -28,7 +28,7 @@ namespace TaminService
             {
                 //NLog: catch setup errors
                 logger.Error(ex, "Stopped program because of exception");
-                throw;
+                throw ;
             }
             finally
             {

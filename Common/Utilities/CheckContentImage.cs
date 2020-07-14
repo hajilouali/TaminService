@@ -160,5 +160,115 @@ namespace Tools
 
             return true;
         }
+        public static bool isExcelFile(this IFormFile postedFile)
+        {
+            //-------------------------------------------
+            //  Check the image mime types
+            //-------------------------------------------
+            if (postedFile.ContentType.ToLower() != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"                         
+                        
+                )
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Check the image extension
+            //-------------------------------------------
+            if (Path.GetExtension(postedFile.FileName).ToLower() != ".xls"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".xlsx"
+               )
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Attempt to read the file and check the first bytes
+            //-------------------------------------------
+            try
+            {
+                if (!postedFile.OpenReadStream().CanRead)
+                {
+                    return false;
+                }
+
+                if (postedFile.Length < ImageMinimumBytes)
+                {
+                    return false;
+                }
+
+                byte[] buffer = new byte[512];
+                postedFile.OpenReadStream().Read(buffer, 0, 512);
+                string content = System.Text.Encoding.UTF8.GetString(buffer);
+                if (Regex.IsMatch(content, @"<script|<html|<head|<title|<body|<pre|<table|<a\s+href|<img|<plaintext|<cross\-domain\-policy",
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline))
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
+
+            return true;
+        }
+        public static bool isDBFFile(this IFormFile postedFile)
+        {
+            //-------------------------------------------
+            //  Check the image mime types
+            //-------------------------------------------
+            if (postedFile.ContentType.ToLower() != "application/octet-stream"
+
+                )
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Check the image extension
+            //-------------------------------------------
+            if (Path.GetExtension(postedFile.FileName).ToLower() != ".dbf"
+                
+               )
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Attempt to read the file and check the first bytes
+            //-------------------------------------------
+            try
+            {
+                if (!postedFile.OpenReadStream().CanRead)
+                {
+                    return false;
+                }
+
+                if (postedFile.Length < ImageMinimumBytes)
+                {
+                    return false;
+                }
+
+                byte[] buffer = new byte[512];
+                postedFile.OpenReadStream().Read(buffer, 0, 512);
+                string content = System.Text.Encoding.UTF8.GetString(buffer);
+                if (Regex.IsMatch(content, @"<script|<html|<head|<title|<body|<pre|<table|<a\s+href|<img|<plaintext|<cross\-domain\-policy",
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline))
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
+
+            return true;
+        }
     }
 }

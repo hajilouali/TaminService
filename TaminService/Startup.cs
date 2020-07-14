@@ -49,7 +49,15 @@ namespace TaminService
             });
 
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
-
+            // Add service and create Policy with options
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
             services.AddDbContext(Configuration);
 
@@ -86,7 +94,7 @@ namespace TaminService
             app.UseHttpsRedirection();
 
             app.UseSwaggerAndUI();
-
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
 
             app.UseMvc();

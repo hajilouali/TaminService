@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -9,6 +10,11 @@ namespace Entities.Tamin
 {
     public class Employees:BaseEntity
     {
+        public Employees()
+        {
+            ListEmployeeID = 0;
+            IsKarfarma = false;
+        }
 
         public int UserID { get; set; }
         /// <summary>
@@ -51,18 +57,20 @@ namespace Entities.Tamin
         /// ملیت
         /// </summary>
         public string DSW_NAT { get; set; }
-        /// <summary>
-        /// شرح شغل
-        /// </summary>
-        public string DSW_OCP { get; set; }
+
         /// <summary>
         /// کد شغل
         /// </summary>
-        public string DSW_JOB { get; set; }
+        public int jobid { get; set; }
         /// <summary>
         /// کد ملی
         /// </summary>
         public string PER_NATCOD { get; set; }
+        public bool IsKarfarma { get; set; }
+        public int ListEmployeeID { get; set; }
+        [ForeignKey("jobid")]
+        public Jobs Jobs { get; set; }
+
         public User User { get; set; }
         public ICollection<WorkMonth> WorkMonths { get; set; }
         public class UserConfiguration : IEntityTypeConfiguration<Employees>
@@ -70,18 +78,16 @@ namespace Entities.Tamin
             public void Configure(EntityTypeBuilder<Employees> builder)
             {
                 builder.HasOne(p => p.User).WithMany(p => p.Employees).HasForeignKey(p => p.UserID);
+                builder.HasOne(p => p.Jobs).WithMany(p => p.Employees).HasForeignKey(p => p.jobid);
+
                 builder.Property(p => p.DSW_ID1).IsRequired().HasMaxLength(10);
                 builder.Property(p => p.DSW_FNAME).IsRequired().HasMaxLength(100);
                 builder.Property(p => p.DSW_LNAME).IsRequired().HasMaxLength(100);
                 builder.Property(p => p.DSW_DNAME).IsRequired().HasMaxLength(100);
                 builder.Property(p => p.DSW_IDNO).IsRequired().HasMaxLength(15);
-                builder.Property(p => p.DSW_IDPLC).IsRequired().HasMaxLength(100);
                 builder.Property(p => p.DSW_IDATE).IsRequired().HasMaxLength(8);
                 builder.Property(p => p.DSW_BDATE).IsRequired().HasMaxLength(8);
                 builder.Property(p => p.DSW_SEX).IsRequired().HasMaxLength(3);
-                builder.Property(p => p.DSW_NAT).IsRequired().HasMaxLength(10);
-                builder.Property(p => p.DSW_OCP).IsRequired().HasMaxLength(100);
-                builder.Property(p => p.DSW_JOB).IsRequired().HasMaxLength(8);
                 builder.Property(p => p.PER_NATCOD).IsRequired().HasMaxLength(10);
             }
         }

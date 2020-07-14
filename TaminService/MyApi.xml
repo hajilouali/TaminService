@@ -4,6 +4,367 @@
         <name>TaminService</name>
     </assembly>
     <members>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_ID1">
+            <summary>
+            شماره بیمه
+            </summary>
+            
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_FNAME">
+            <summary>
+            نام
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_LNAME">
+            <summary>
+            نام خانوادگی
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_DNAME">
+            <summary>
+            نام پدر
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_IDNO">
+            <summary>
+            شماره شناسنامه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_IDPLC">
+            <summary>
+            محل صدور
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_IDATE">
+            <summary>
+            تاریخ صدور
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_BDATE">
+            <summary>
+            تاریخ تولد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_SEX">
+            <summary>
+            جنسیت
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.DSW_NAT">
+            <summary>
+            ملیت
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDto.PER_NATCOD">
+            <summary>
+            کد ملی
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_ID1">
+            <summary>
+            شماره بیمه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_FNAME">
+            <summary>
+            نام
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_LNAME">
+            <summary>
+            نام خانوادگی
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_DNAME">
+            <summary>
+            نام پدر
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_IDNO">
+            <summary>
+            شماره شناسنامه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_IDPLC">
+            <summary>
+            محل صدور
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_BDATE">
+            <summary>
+            تاریخ تولد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_SEX">
+            <summary>
+            جنسیت
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_NAT">
+            <summary>
+            ملیت
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.DSW_OCP">
+            <summary>
+            کد شغل
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeExcelmodel.PER_NATCOD">
+            <summary>
+            کد ملی
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_ID1">
+            <summary>
+            شماره بیمه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_FNAME">
+            <summary>
+            نام
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_LNAME">
+            <summary>
+            نام خانوادگی
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_DNAME">
+            <summary>
+            نام پدر
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_IDNO">
+            <summary>
+            شماره شناسنامه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_IDPLC">
+            <summary>
+            محل صدور
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_BDATE">
+            <summary>
+            تاریخ تولد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_SEX">
+            <summary>
+            جنسیت
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_NAT">
+            <summary>
+            ملیت
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.DSW_OCP">
+            <summary>
+            کد شغل
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.EmployeeDBFmodel.PER_NATCOD">
+            <summary>
+            کد ملی
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.JobsDto.DSW_JOB">
+            <summary>
+            کد شغل
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.JobsDto.DSW_OCP">
+            <summary>
+            شرح شغل
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_KIND">
+            <summary>
+            نوع لیست
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_YY">
+            <summary>
+            سال عملکرد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_MM">
+            <summary>
+            ماه عملکرد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_LISTNO">
+            <summary>
+            شماره لیست
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_DISC">
+            <summary>
+            توضیحات لیست
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_NUM">
+            <summary>
+            تعداد کارکنان
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_TDD">
+            <summary>
+            مجموع روز های کارکرد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_TROOZ">
+            <summary>
+            مجموع دستمزد روزانه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_TMAH">
+            <summary>
+            مجموع دستمزد ماهانه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_TMAZ">
+            <summary>
+            مجموع مزایای ماهانه مشمول
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_TMASH">
+            <summary>
+            مجموع دستمزد و مزایای ماهانه مشمول
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_TTOTL">
+            <summary>
+            مجموع کل مزایای ماهانه( مشمول و غیر مشمول)
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_TBIME">
+            <summary>
+            مجموع حق بیمه سهم بیمه شده
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_TKOSO">
+            <summary>
+            مجموع حق بیمه سهم کارفرما
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_BIC">
+            <summary>
+            مجموع حق بیمه بیکاری
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_PRATE">
+            <summary>
+            نرخ حق پورسانتاژ
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.KarMonthDto.DSK_BIMH">
+            <summary>
+            نرخ مشاغل سخت زیان آور
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.ManufactureDto.DSK_ID">
+            <summary>
+            کد کارگاه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.ManufactureDto.DSK_NAME">
+            <summary>
+            نام کارگاه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.ManufactureDto.DSK_FARM">
+            <summary>
+            نام کارفرما 
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.ManufactureDto.DSK_ADRS">
+            <summary>
+            آدرس کارگاه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.ManufactureDto.MON_PYM">
+            <summary>
+            ردیف پیمان
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.ManufactureDto.DSK_RATE">
+            <summary>
+            نرخ حق بیمه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_ID">
+            <summary>
+            کد کارگاه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_YY">
+            <summary>
+            سال عملکرد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_MM">
+            <summary>
+            ماه عملکرد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_LISTNO">
+            <summary>
+            شماره لیست
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_SDATE">
+            <summary>
+            تاریخ شروع به کار
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_EDATE">
+            <summary>
+            تاریخ ترک کار
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_DD">
+            <summary>
+            تعداد روز های کارکرد
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_ROOZ">
+            <summary>
+            دستمزد روزانه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_MAH">
+            <summary>
+            دستمزد ماهانه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_MAZ">
+            <summary>
+            مزایای ماهانه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_MASH">
+            <summary>
+            جمع دستمزد و مزایای ماهانه مشمول
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_TOTL">
+            <summary>
+            جمع کل دستمزد و مزایای ماهانه
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_BIME">
+            <summary>
+            حق بیمه سهم بیمه شده
+            </summary>
+        </member>
+        <member name="P:TaminService.Models.WorkMonthDto.DSW_PRATE">
+            <summary>
+            نرخ پورسانتاژ
+            </summary>
+        </member>
         <member name="M:MyApi.Controllers.v1.UsersController.Token(TaminApp.Models.TokenRequest,System.Threading.CancellationToken)">
             <summary>
             This method generate JWT Token

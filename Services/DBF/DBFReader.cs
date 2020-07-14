@@ -280,7 +280,11 @@ namespace Services.DBF
                     var property = type.GetProperty(pair.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                     if (property != null)
                     {
-                        if (property.PropertyType.Name.Contains("String"))
+                        if (property.PropertyType.Name.Contains("String")&&
+                            !property.ToString().Contains("DSW_ID1") &&
+                            !property.ToString().Contains("DSW_BDATE") &&
+                            !property.ToString().Contains("DSW_IDNO") &&
+                            !property.ToString().Contains("PER_NATCOD"))
                         {
                             if (property.PropertyType == pair.Value.GetType())
                             {

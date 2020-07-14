@@ -22,6 +22,10 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Swashbuckle.AspNetCore.Filters;
 using System.Linq;
+using Entities.Tamin;
+using Tools;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace MyApi.Controllers.v1
 {
@@ -35,10 +39,13 @@ namespace MyApi.Controllers.v1
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
         private readonly SignInManager<User> signInManager;
-
+        private readonly IRepository<Employees> _Employees;
+        private readonly IRepository<Manufacturys> _Manufacturys;
+        private readonly IRepository<KarMonth> _KarMonth;
+        private readonly IRepository<UserPayement> _UserPayement;
         private readonly IRepository<Role> _Role;
-
-        public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IJwtService jwtService, UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager, IRepository<Role> role)
+        private readonly IHostingEnvironment _hostingEnvironment;
+        public UsersController(IUserRepository userRepository, ILogger<UsersController> logger, IJwtService jwtService, UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager, IRepository<Role> role, IRepository<Employees> employees, IRepository<Manufacturys> manufacturys, IRepository<KarMonth> KarMonth, IRepository<UserPayement> userPayement, IHostingEnvironment hostingEnvironment)
         {
             this.userRepository = userRepository;
             this.logger = logger;
@@ -47,8 +54,71 @@ namespace MyApi.Controllers.v1
             this.roleManager = roleManager;
             this.signInManager = signInManager;
             _Role = role;
+            _Employees = employees;
+            _Manufacturys = manufacturys;
+            _KarMonth = KarMonth;
+            _UserPayement = userPayement;
+            _hostingEnvironment = hostingEnvironment;
         }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<ActionResult<bool>> Addprofilepic(CancellationToken cancellationToken)
+        {
+            var file = Request.Form.Files[0];
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
 
+
+            if (CheckContentImage.IsImage(file))
+            {
+                if (!string.IsNullOrEmpty(user.ProfilePIC))
+                {
+                    var path = Path.Combine(_hostingEnvironment.WebRootPath,  user.ProfilePIC.Replace("/","\\"));
+                    bool existss = System.IO.File.Exists(path);
+                    if(existss)
+                        System.IO.File.Delete(path);
+                }
+                bool exists = System.IO.Directory.Exists(Path.Combine(_hostingEnvironment.WebRootPath, "uploads/Users/" + user.Id));
+                if (!exists)
+                    System.IO.Directory.CreateDirectory(Path.Combine(_hostingEnvironment.WebRootPath, "uploads/Users/" + user.Id));
+                var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads/Users/" + user.Id);
+                int CountFile = System.IO.Directory.GetFiles(Path.Combine(_hostingEnvironment.WebRootPath, "uploads/Users/" + user.Id)).Length;
+                string FName = user.Id.ToString() + CountFile.ToString() + Path.GetExtension(file.FileName);
+                var filePath = Path.Combine(uploads, FName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream, cancellationToken);
+                    user.ProfilePIC = Path.Combine("uploads/Users/"+user.Id+"/", FName);
+                    await userManager.UpdateAsync(user);                    
+                    return Ok(true);
+                }
+            }
+
+            throw new BadRequestException("مشکلی  ایجاد شده است");
+        }
+        [HttpPost("[action]")]
+        [Authorize]
+        public virtual async Task<ActionResult<bool>> UpdatePassword(changepassworddto dto, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await userManager.FindByNameAsync(User.Identity.Name);
+                if (user != null)
+                {
+                    if (dto.newpassword == dto.repassword)
+                    {
+                        var res = await userManager.ChangePasswordAsync(user, dto.curentpassword, dto.newpassword);
+                        if (res.Succeeded)
+                            return Ok(true);
+                    }
+                    return Ok(false);
+                }
+                return Ok(false);
+            }
+            catch
+            {
+                return Ok(false);
+            }
+        }
         [HttpGet("[action]")]
         [Authorize]
         public virtual async Task<ActionResult<bool>> CheckTokenIsValid(CancellationToken cancellationToken)
@@ -82,14 +152,20 @@ namespace MyApi.Controllers.v1
             List<UserModel> list = new List<UserModel>();
             foreach (var item in users)
             {
+
                 list.Add(new UserModel()
                 {
                     id = item.Id,
                     IsActive = item.IsActive,
-                    Email = item.Email,
+                    EmplyeCount = _Employees.TableNoTracking.Where(p => p.UserID == item.Id).Count(),
                     FullName = item.FullName,
-                    UserName = item.UserName,
-                    RollName = await userManager.GetRolesAsync(item)
+                    ManufacturyCount = _Manufacturys.TableNoTracking.Where(p => p.UserID == item.Id).Count(),
+                    RollName = await userManager.GetRolesAsync(item),
+                    ListCount = _KarMonth.TableNoTracking.Include(p => p.Manufacturys).Where(p => p.Manufacturys.UserID == item.Id).Count(),
+                    UserPhone = item.PhoneNumber,
+                    UserWallet = (await _UserPayement.TableNoTracking.Where(p => p.UserID == item.Id).SumAsync(p => p.Bestankar, cancellationToken)) -
+                    (await _UserPayement.TableNoTracking.Where(p => p.UserID == item.Id).SumAsync(p => p.Bedehkari, cancellationToken)),
+                    UserImage = item.ProfilePIC
                 });
             }
             return Ok(list);
@@ -101,7 +177,7 @@ namespace MyApi.Controllers.v1
             logger.LogError("متد Create فراخوانی شد");
             HttpContext.RiseError(new Exception("متد Create فراخوانی شد"));
 
-            var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName.ToLower() == userDto.PhoneNumber.ToLower() || p.Address.ToLower() ==userDto.Email.ToLower()); ;
+            var exists = await userRepository.TableNoTracking.AnyAsync(p => p.UserName.ToLower() == userDto.PhoneNumber.ToLower() || p.Address.ToLower() == userDto.Email.ToLower()); ;
             if (exists)
                 return BadRequest("نام کاربری تکراری است");
             //Services.Bessines.UsersProcess usersProcess = new Services.Bessines.UsersProcess(signInManager, userManager, roleManager, _clientRepository, _accountingHeading, _Factor, _Expert);
@@ -121,7 +197,8 @@ namespace MyApi.Controllers.v1
                 PasswordHash = userDto.Password,
                 Email = userDto.Email,
                 FullName = userDto.FullName,
-                PhoneNumber=userDto.PhoneNumber
+                PhoneNumber = userDto.PhoneNumber,
+
             };
             await userManager.CreateAsync(user, user.PasswordHash);
             await userManager.AddToRolesAsync(user, new List<string> { "User" });
@@ -176,11 +253,15 @@ namespace MyApi.Controllers.v1
             {
                 id = user.Id,
                 IsActive = user.IsActive,
-                Email = user.Email,
+                EmplyeCount = _Employees.TableNoTracking.Where(p => p.UserID == user.Id).Count(),
                 FullName = user.FullName,
-                UserName = user.UserName,
+                ManufacturyCount = _Manufacturys.TableNoTracking.Where(p => p.UserID == user.Id).Count(),
                 RollName = await userManager.GetRolesAsync(user),
-
+                ListCount = _KarMonth.TableNoTracking.Include(p => p.Manufacturys).Where(p => p.Manufacturys.UserID == user.Id).Count(),
+                UserPhone = user.PhoneNumber,
+                UserWallet = (await _UserPayement.TableNoTracking.Where(p => p.UserID == user.Id).SumAsync(p => p.Bestankar, cancellationToken)) -
+                    (await _UserPayement.TableNoTracking.Where(p => p.UserID == user.Id).SumAsync(p => p.Bedehkari, cancellationToken)),
+                UserImage = user.ProfilePIC
             };
 
             return dto;
@@ -195,12 +276,12 @@ namespace MyApi.Controllers.v1
         [AllowAnonymous]
         public virtual async Task<ActionResult> Token([FromForm]TokenRequest tokenRequest, CancellationToken cancellationToken)
         {
-            
+
             if (!tokenRequest.grant_type.Equals("password", StringComparison.OrdinalIgnoreCase))
                 throw new Exception("OAuth flow is not password.");
 
             //var user = await userRepository.GetByUserAndPass(username, password, cancellationToken);
-            var user = await userManager.Users.FirstOrDefaultAsync(p=>p.PhoneNumber==tokenRequest.username);
+            var user = await userManager.Users.FirstOrDefaultAsync(p => p.PhoneNumber == tokenRequest.username);
             if (user == null)
                 throw new BadRequestException("نام کاربری یا رمز عبور اشتباه است");
 
@@ -237,7 +318,7 @@ namespace MyApi.Controllers.v1
             var user = await userManager.FindByIdAsync(id.ToString());
             await userManager.RemoveFromRolesAsync(user, await userManager.GetRolesAsync(user));
             var res = await userManager.DeleteAsync(user);
-            if(!res.Succeeded)
+            if (!res.Succeeded)
                 return BadRequest("در فرایند پاک کردن کاربر مشکل پیش امده ");
             return Ok();
         }
@@ -288,10 +369,15 @@ namespace MyApi.Controllers.v1
                 {
                     id = item.Id,
                     IsActive = item.IsActive,
-                    Email = item.Email,
+                    EmplyeCount = _Employees.TableNoTracking.Where(p => p.UserID == item.Id).Count(),
                     FullName = item.FullName,
-                    UserName = item.UserName,
-                    RollName = await userManager.GetRolesAsync(item)
+                    ManufacturyCount = _Manufacturys.TableNoTracking.Where(p => p.UserID == item.Id).Count(),
+                    RollName = await userManager.GetRolesAsync(item),
+                    ListCount = _KarMonth.TableNoTracking.Include(p => p.Manufacturys).Where(p => p.Manufacturys.UserID == item.Id).Count(),
+                    UserPhone = item.PhoneNumber,
+                    UserWallet = (await _UserPayement.TableNoTracking.Where(p => p.UserID == item.Id).SumAsync(p => p.Bestankar, cancellationToken)) -
+                    (await _UserPayement.TableNoTracking.Where(p => p.UserID == item.Id).SumAsync(p => p.Bedehkari, cancellationToken)),
+                    UserImage = item.ProfilePIC
                 });
             }
             return Ok(list);

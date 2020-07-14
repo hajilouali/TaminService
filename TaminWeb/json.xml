@@ -2,8 +2,48 @@
 <PagesConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <siteSlider>
     <subscriptionForm>true</subscriptionForm>
-    <Image>aa</Image>
-    <Title>علی</Title>
-    <Subtitle>زیر عنوان</Subtitle>
+    <Image>/Content/media/banner/mobile.png</Image>
+    <Title>این بهترین قالب چند منظوره با طراحی جذاب</Title>
+    <Subtitle>پروژه های طراحی ما تازه و ساده هستند و به نفع شما خواهند بود تجارت بسیار. ادامه مطالعه در مورد کار ما!</Subtitle>
+    <Video>https://www.aparat.com/video/video/embed/videohash/4SHQT/vt/frame</Video>
   </siteSlider>
+  <MobileSection>
+    <MobileSectionProperties>
+      <Image>/Content/media/feature/22.png</Image>
+      <Discription>نمایش نشان می دهد بینی خود را انتخاب کنید ومنفجر کن.</Discription>
+    </MobileSectionProperties>
+    <MobileSectionProperties>
+      <Image>Content/media/feature/23.png</Image>
+      <Discription>تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود</Discription>
+    </MobileSectionProperties>
+    <MobileSectionProperties>
+      <Image>/Content/media/feature/24.png</Image>
+      <Discription>نقشه را گم کردید با من پیراهن نکنید بلاگر چند منظوره.</Discription>
+    </MobileSectionProperties>
+    <MobileSectionProperties>
+      <Image>/Content/media/feature/25.png</Image>
+      <Discription>فنجان بازی اسب کارتی بهانه من خمیر فرانسه.</Discription>
+    </MobileSectionProperties>
+  </MobileSection>
+  <InterfaceSectionProperty>
+    <Title>رابط کاربری آسان بروز با آخرین بخش نامه های دولت .</Title>
+    <Discription>از دست دادن نقشه شکستن طرح به ما یک زنگ بازی اسب اسباب بازی است فنجان لیمو فشرده ، فنجان کاک کاراکتر متی مایع نقشه را گم کردید با من پیراهن نکنید</Discription>
+    <property>راهنمای نصب</property>
+    <property>فرایند راه اندازی آسان</property>
+    <property>با تماس تصویری</property>
+    <Image1>/Content/media/feature/26.png</Image1>
+    <Image2>/Content/media/feature/27.png</Image2>
+  </InterfaceSectionProperty>
+  <InterfaceSectionProperty>
+    <Title>رابط کاربری آسان بروز با آخرین بخش نامه های دولت .</Title>
+    <Discription>از دست دادن نقشه شکستن طرح به ما یک زنگ بازی اسب اسباب بازی است فنجان لیمو فشرده ، فنجان کاک کاراکتر متی مایع نقشه را گم کردید با من پیراهن نکنید</Discription>
+    <property>راهنمای نصب</property>
+    <property>فرایند راه اندازی آسان</property>
+    <property>با تماس تصویری</property>
+    <Image1>/Content/media/feature/28.png</Image1>
+    <Image2>/Content/media/feature/29.png</Image2>
+  </InterfaceSectionProperty>
+  <AndroidURL></AndroidURL>
+  <IOSUrl></IOSUrl>
+  <BazarUrl></BazarUrl>
 </PagesConfig>

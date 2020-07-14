@@ -260,6 +260,21 @@ namespace Data.Migrations
                     b.ToTable("SSliders");
                 });
 
+            modelBuilder.Entity("Entities.Tamin.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code");
+
+                    b.Property<string>("DSW_NAT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("Entities.Tamin.Employees", b =>
                 {
                     b.Property<int>("Id")
@@ -280,23 +295,27 @@ namespace Data.Migrations
 
                     b.Property<string>("DSW_IDPLC");
 
-                    b.Property<string>("DSW_JOB");
-
                     b.Property<string>("DSW_LNAME");
 
                     b.Property<string>("DSW_NAT");
 
-                    b.Property<string>("DSW_OCP");
-
                     b.Property<string>("DSW_SEX");
+
+                    b.Property<bool>("IsKarfarma");
+
+                    b.Property<int>("ListEmployeeID");
 
                     b.Property<string>("PER_NATCOD");
 
                     b.Property<int>("UserID");
 
+                    b.Property<int>("jobid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserID");
+
+                    b.HasIndex("jobid");
 
                     b.ToTable("Employees");
                 });
@@ -307,9 +326,9 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code");
+                    b.Property<string>("DSW_JOB");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("DSW_OCP");
 
                     b.HasKey("Id");
 
@@ -360,13 +379,32 @@ namespace Data.Migrations
 
                     b.Property<int>("ManufacturyID");
 
-                    b.Property<int?>("ManufacturysId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManufacturyID");
+
+                    b.ToTable("KarMonths");
+                });
+
+            modelBuilder.Entity("Entities.Tamin.ListEmployee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Discription");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150);
+
+                    b.Property<int>("UserID");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ManufacturysId");
+                    b.HasIndex("UserID");
 
-                    b.ToTable("KarMonths");
+                    b.ToTable("ListEmployees");
                 });
 
             modelBuilder.Entity("Entities.Tamin.Manufacturys", b =>
@@ -396,21 +434,52 @@ namespace Data.Migrations
                     b.ToTable("Manufacturys");
                 });
 
+            modelBuilder.Entity("Entities.Tamin.OffersCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(10);
+
+                    b.Property<int?>("CountExpire");
+
+                    b.Property<DateTime>("DateCreate");
+
+                    b.Property<DateTime?>("DateExpire");
+
+                    b.Property<string>("Discription")
+                        .HasMaxLength(150);
+
+                    b.Property<int>("OfferRate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OffersCodes");
+                });
+
             modelBuilder.Entity("Entities.Tamin.PayementHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CodeRahgiri");
-
                     b.Property<DateTime>("DateTime");
 
                     b.Property<string>("Discription");
 
+                    b.Property<string>("Gateway");
+
                     b.Property<bool>("IsSucess");
 
+                    b.Property<string>("OfferCode");
+
                     b.Property<decimal>("Price");
+
+                    b.Property<long?>("Trackingnumber");
+
+                    b.Property<string>("Transactioncode");
 
                     b.Property<int>("UserID");
 
@@ -429,7 +498,7 @@ namespace Data.Migrations
 
                     b.Property<string>("Code");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("DSW_IDPLC");
 
                     b.HasKey("Id");
 
@@ -497,13 +566,11 @@ namespace Data.Migrations
 
                     b.Property<int>("EmployeID");
 
-                    b.Property<int?>("EmployeesId");
-
                     b.Property<int>("KarMonthID");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeesId");
+                    b.HasIndex("EmployeID");
 
                     b.HasIndex("KarMonthID");
 
@@ -516,13 +583,9 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Closed");
-
                     b.Property<DateTime>("DataCreate");
 
                     b.Property<DateTime>("DataModified");
-
-                    b.Property<short>("Department");
 
                     b.Property<bool>("IsAdminSide");
 
@@ -750,13 +813,27 @@ namespace Data.Migrations
                         .WithMany("Employees")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Entities.Tamin.Jobs", "Jobs")
+                        .WithMany("Employees")
+                        .HasForeignKey("jobid")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Entities.Tamin.KarMonth", b =>
                 {
                     b.HasOne("Entities.Tamin.Manufacturys", "Manufacturys")
                         .WithMany("KarMonths")
-                        .HasForeignKey("ManufacturysId");
+                        .HasForeignKey("ManufacturyID")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Entities.Tamin.ListEmployee", b =>
+                {
+                    b.HasOne("Entities.User", "User")
+                        .WithMany("ListEmployees")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Entities.Tamin.Manufacturys", b =>
@@ -787,7 +864,8 @@ namespace Data.Migrations
                 {
                     b.HasOne("Entities.Tamin.Employees", "Employees")
                         .WithMany("WorkMonths")
-                        .HasForeignKey("EmployeesId");
+                        .HasForeignKey("EmployeID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Entities.Tamin.KarMonth", "KarMonth")
                         .WithMany("WorkMonths")

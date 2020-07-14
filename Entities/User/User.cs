@@ -32,6 +32,7 @@ namespace Entities
         public ICollection<Manufacturys> Manufacturys { get; set; }
         public ICollection<PayementHistory> payementHistories { get; set; }
         public ICollection<Post> Posts { get; set; }
+        public ICollection<ListEmployee> ListEmployees { get; set; }
     }
 
     public class UserConfiguration : IEntityTypeConfiguration<User>
